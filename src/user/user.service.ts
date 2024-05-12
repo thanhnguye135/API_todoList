@@ -24,14 +24,18 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    if(!id) return null;
+  findOne(email: string) {
+    if(!email) return null;
 
-    return this.userRepository.find({where: {id}});
+    return this.userRepository.find({where: {email}});
   }
 
-  async update(id: number, attrs: Partial<User>) {
-    let user = await this.findOne(id);
+  findUserId(email: string){
+    return this.findOne(email);
+  }
+
+  async update(email: string, attrs: Partial<User>) {
+    let user = await this.findOne(email);
     if(!user){
       throw new NotFoundException('user not found');
     }
@@ -40,8 +44,8 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async remove(id: number) {
-    const user = await this.findOne(id);
+  async remove(email: string) {
+    const user = await this.findOne(email);
     if(!user){
       throw new NotFoundException('user not found');
     }
